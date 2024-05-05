@@ -52,7 +52,7 @@ class Server:
     def get_hyper(
         self, page: int = 1, page_size: int = 10
     ) -> Dict[str, Union[int, List[List[Any]], Optional[int]]]:
-        """Returns a dict containing more information concerning the returned page"""
+        """Returns dict containing more information about the returned page"""
         dat = self.get_page(page, page_size)
         data = []
         with open("./Popular_Baby_Names.csv", "r", encoding="utf-8") as f:
