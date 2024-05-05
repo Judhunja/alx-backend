@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """This module contains a function index_range"""
 
-from typing import Tuple, List, Dict
+from typing import Tuple, List, Dict, Optional, Union, Any
 import csv
 import math
 
@@ -31,7 +31,7 @@ class Server:
         parameters"""
         start_ind = (page - 1) * page_size
         end_ind = start_ind + page_size
-        return [start_ind, end_ind]
+        return (start_ind, end_ind)
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """returns the appropriate list of rows for the specified range"""
@@ -49,7 +49,9 @@ class Server:
         except IndexError:
             return []
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, int]:
+    def get_hyper(
+        self, page: int = 1, page_size: int = 10
+    ) -> Dict[str, Union[int, List[List[Any]], Optional[int]]]:
         """Returns a dict containing more information concerning the returned page"""
         dat = self.get_page(page, page_size)
         data = []
@@ -62,16 +64,11 @@ class Server:
         next_page = page + 1
         prev_page = page - 1
 
-        if prev_page < 1:
-            prev_page = None
-        elif next_page > total_pages:
-            next_page = None
-
         return {
             "page_size": page_size,
             "page": page,
             "data": dat,
-            "next_page": next_page,
-            "prev_page": prev_page,
+            "next_page": next_page if next_page <= total_pages else None,
+            "prev_page": prev_page if prev_page >= 1 else None,
             "total_pages": total_pages,
         }
