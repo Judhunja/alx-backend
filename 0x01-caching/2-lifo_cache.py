@@ -12,14 +12,17 @@ class LIFOCache(BaseCaching):
         """Initializes class LIFOCache"""
         super().__init__()
         self.cache_data = {}
+        self.order_items = []
 
     def put(self, key, item):
         """Inserts into cache_data"""
         if key is not None and item is not None:
             self.cache_data[key] = item
+            self.order_items.append(key)
             if len(self.cache_data.items()) > super().MAX_ITEMS:
-                discarded = self.cache_data.popitem()
-                print(f"DISCARD: {discarded[0]}")
+                discarded = self.order_items[-2]
+                del self.cache_data[discarded]
+                print(f"DISCARD: {discarded}")
 
     def get(self, key):
         """Returns value associated with a key"""
