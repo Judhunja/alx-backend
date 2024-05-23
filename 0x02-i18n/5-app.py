@@ -5,7 +5,7 @@ with the correct translation based on the client supplied language"""
 import flask
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
-from typing import List, Optional
+from typing import List, Optional, Union
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -29,7 +29,7 @@ class Config:
 app.config.from_object(Config)
 
 
-def get_user() -> dict:
+def get_user() -> Union[dict, None, object]:
     """Returns a user dictionary"""
     id = request.args.get('login_as')
     if id is not None:
