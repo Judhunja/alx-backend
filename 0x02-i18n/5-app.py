@@ -29,7 +29,7 @@ class Config:
 app.config.from_object(Config)
 
 
-def get_user():
+def get_user() -> dict:
     """Returns a user dictionary"""
     id = request.args.get('login_as')
     if id is not None:
@@ -40,7 +40,7 @@ def get_user():
 
 
 @app.before_request
-def before_request():
+def before_request() -> None:
     """Finds a user using get_user and sets it as a global
     on flask.g.user"""
     user = get_user()
