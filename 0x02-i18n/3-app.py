@@ -21,16 +21,10 @@ app.config.from_object(Config)
 @app.route('/')
 def home():
     """Route for the home page"""
-    locale = get_locale()
-    welcome_msg = _('home_title')
-    header = _('home_header')
     return render_template('3-index.html',
-                           locale=locale,
-                           home_title=welcome_msg,
-                           home_header=header)
+                           locale=get_locale())
 
 
-@babel.localeselector
 def get_locale():
     """Determines the best match of this application
     with the client requested languages"""
