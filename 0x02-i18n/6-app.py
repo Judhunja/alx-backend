@@ -71,11 +71,14 @@ def get_locale() -> Optional[str]:
     # otherwise default to the previous behaviour
     if requested_lang in Config.LANGUAGES:
         return requested_lang
-    user = flask.g.user
-    if user is not None:
-        user_locale = user["locale"]
-        if user_locale in Config.LANGUAGES:
-            return user_locale
+    try:
+        user = flask.g.user
+        if user is not None:
+            user_locale = user["locale"]
+            if user_locale in Config.LANGUAGES:
+                return user_locale
+    except AttributeError:
+        pass
 
     best_locale = request.accept_languages.best_match(Config.LANGUAGES)
     if best_locale:
