@@ -5,6 +5,7 @@ with the correct translation based on the client supplied language"""
 from flask import Flask, render_template, request
 from flask_babel import Babel, _
 from typing import List, Optional
+import pytz
 
 app = Flask(__name__)
 babel = Babel(app)
@@ -49,12 +50,24 @@ def get_timezone() -> Optional[str]:
     with the client requested timezone"""
     # get the value of timezone arg of the url
     timez = request.args.get('timezone')
+    try:
+        pytz.timezone(timez)
+        return timez
+    except pytz.exceptions.UnknownTimeZoneError:
+        pass
+
     # check if its in the supported timezone,
     # otherwise default to the previous behaviour
     if timez in Config.BABEL_DEFAULT_TIMEZONE:
-        return timez
+        try:
+            pytz.timezone(timez)
+            return timez
+        except pytz.exceptions.UnknownTimeZoneError:
+            pass
     return 'UTC'
 
+
+babel.init_app(app, timezone_selector=get_timezone)
 
 
 if __name__ == '__main__':
