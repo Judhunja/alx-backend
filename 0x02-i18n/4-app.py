@@ -25,11 +25,10 @@ app.config.from_object(Config)
 def home() -> str:
     """Route for the home page
     locale is passed to determine language"""
-    return render_template('3-index.html',
+    return render_template('4-index.html',
                            locale=get_locale())
 
 
-@babel.localeselector
 def get_locale() -> Optional[str]:
     """Determines the best match of this application
     with the client requested languages"""
@@ -42,6 +41,9 @@ def get_locale() -> Optional[str]:
     return request.accept_languages.best_match(Config.LANGUAGES)
 
 
+babel.init_app(app, locale_selector=get_locale)
+
+
 if __name__ == '__main__':
     """Run app in debug mode"""
-    app.run(debug=True)
+    app.run()
