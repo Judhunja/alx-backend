@@ -61,7 +61,6 @@ def home() -> str:
                            locale=get_locale(), status=status)
 
 
-@babel.localeselector
 def get_locale() -> Optional[str]:
     """Determines the best match of this application
     with the client requested languages"""
@@ -87,6 +86,9 @@ def get_locale() -> Optional[str]:
     return Config.BABEL_DEFAULT_LOCALE
 
 
+babel.init_app(app, locale_selector=get_locale)
+
+
 if __name__ == '__main__':
-    """Run app in debug mode"""
-    app.run(debug=True)
+    """Run app"""
+    app.run()
