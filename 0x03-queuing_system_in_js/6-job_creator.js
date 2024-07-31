@@ -7,7 +7,7 @@ const jobDetails = {
   message: 'Welcome'
 };
 
-const job = queue.create('push_notification_code', job).save((err) => {
+const job = queue.create('push_notification_code', jobDetails).save((err) => {
   if (err) {
     console.log(err);
   } else {
